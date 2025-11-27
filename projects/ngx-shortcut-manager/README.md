@@ -1,63 +1,96 @@
-# NgxShortcutManager
+# ngx-shortcut-manager
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.0.
+**ngx-shortcut-manager** is an Angular service for managing keyboard shortcuts in scalable web applications. It provides a simple API to register, remove, and clear shortcuts, and triggers callbacks when defined key combinations are pressed.
 
-## Code scaffolding
+## Features
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Register single or multiple keyboard shortcuts
+- Remove or clear shortcuts at runtime
+- Zoneless and signal-friendly
+- Designed for strict TypeScript and Angular best practices
+- Observable-based shortcut detection
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the library, run:
+## Installation
 
 ```bash
-ng build ngx-shortcut-manager
+npm install ngx-shortcut-manager
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+## Usage
 
-### Publishing the Library
+### 1. Provide the Service
 
-Once the project is built, you can publish your library by following these steps:
+The service is provided in root by default. Inject it using Angular's `inject()` function:
 
-1. Navigate to the `dist` directory:
-   ```bash
-   cd dist/ngx-shortcut-manager
-   ```
+```typescript
+import { Component, OnInit, inject } from '@angular/core';
+import { NgxShortcutManager } from 'ngx-shortcut-manager';
 
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
+@Component({
+  selector: 'app-root',
+  template: `<h1>Shortcut Demo</h1>`,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class App implements OnInit {
+  private readonly shortcutManager = inject(NgxShortcutManager);
 
-## Running unit tests
+  ngOnInit(): void {
+    this.shortcutManager.addShortcut({
+      keys: ['Shift', 'A', 'B'],
+      cb: () => { console.log('Shortcut Shift + A + B triggered!'); }
+    });
+  }
+}
+```
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### 2. Register Shortcuts
+
+```typescript
+shortcutManager.addShortcut({
+  keys: ['Control', 'S'],
+  cb: () => { /* Save logic */ }
+});
+```
+
+### 3. Remove or Clear Shortcuts
+
+```typescript
+shortcutManager.removeShortcut(myShortcut);
+shortcutManager.clearShortcuts();
+```
+
+## API
+
+### `addShortcut(shortcut: Shortcut | Shortcut[])`
+
+Registers one or more shortcuts.  
+- `shortcut.keys`: Array of key names (e.g. `['Shift', 'A']`)
+- `shortcut.cb`: Callback function triggered when keys are pressed
+
+### `removeShortcut(shortcut: Shortcut)`
+
+Removes a specific shortcut.
+
+### `clearShortcuts()`
+
+Removes all shortcuts.
+
+## Testing
+
+Unit tests are provided using Jasmine and Angular's TestBed.  
+Run tests with:
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+## Best Practices
 
-For end-to-end (e2e) testing, run:
+- Use strict type checking
+- Prefer signals for state management in components
+- Use `inject()` for service injection
+- Avoid `any` type; use `unknown` if needed
 
-```bash
-ng e2e
-```
+## License
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+MIT
