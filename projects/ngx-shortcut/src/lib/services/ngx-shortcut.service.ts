@@ -10,26 +10,28 @@ export class NgxShortcutService {
     // { keys: ["Shift", "r", "x"], cb: () => { console.log("RxJS is cool!")} },
   ]
 
-  addShortcut(shortcut: Shortcut | Shortcut[]) {
+  public addShortcut(shortcut: Shortcut | Shortcut[]) {
+    console.log('Adding shortcut(s):', shortcut);
     const addAndWatch = (s: Shortcut) => {
-      this.shortcuts.push(s);
-      this.hotkey(s);
-    };
+      this.shortcuts.push(s)
+      console.log('Current shortcuts:', this.shortcuts);
+      this.hotkey(s)
+    }
     if (Array.isArray(shortcut)) {
-      shortcut.forEach(addAndWatch);
+      shortcut.forEach(addAndWatch)
     } else {
-      addAndWatch(shortcut);
+      addAndWatch(shortcut)
     }
   }
 
-  removeShortcut(shortcut: Shortcut) {
+  public removeShortcut(shortcut: Shortcut) {
     const index = this.shortcuts.indexOf(shortcut)
     if (index !== -1) {
       this.shortcuts.splice(index, 1)
     }
   }
 
-  clearShortcuts() {
+  public clearShortcuts() {
     this.shortcuts = []
   }
 

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { NgxShortcut, NgxShortcutService } from '../../../ngx-shortcut-manager/src/public-api';
+import { NgxShortcut, NgxShortcutService } from '../../../ngx-shortcut/src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +14,13 @@ import { NgxShortcut, NgxShortcutService } from '../../../ngx-shortcut-manager/s
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App implements OnInit {
-  private readonly shortcutService = inject(NgxShortcutService);
+  private readonly ngxShortcutService = inject(NgxShortcutService);
   
   ngOnInit(): void {
-    this.shortcutService.addShortcut({ keys: ["Shift", "a", "b"], cb: () => { console.log("Shortcut Shift + A + B triggered!")} });
-  }  
+    this.ngxShortcutService.addShortcut({ keys: ["Shift", "a", "b"], cb: () => { console.log("Shortcut Shift + A + B triggered!")} });
+  }
+  
+  freshCb() {
+    console.log("Shortcut Shift + A + Y triggered!");
+  }
 }
